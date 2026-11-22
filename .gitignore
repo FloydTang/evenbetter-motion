@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+__pycache__/
+# episodes hold private footage: only the template is tracked
+episodes/*
+!episodes/_template/
+episodes/_template/raw/*
+episodes/_template/assets/*
+episodes/_template/build/
+!episodes/_template/raw/.gitkeep
+!episodes/_template/assets/.gitkeep
+out/
+*.mp4
+*.mov
+*.m4a

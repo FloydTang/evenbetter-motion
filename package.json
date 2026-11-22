@@ -1,0 +1,15 @@
+{
+  "name": "bjjl-house-motion-skill",
+  "version": "1.0.0",
+  "description": "半斤九两动效系统：代码驱动的竖屏口播剪辑与动效",
+  "scripts": {
+    "render": "node tools/render.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.187.0"
+  },
+  "private": true
+}

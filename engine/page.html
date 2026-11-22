@@ -1,0 +1,27 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Noto Sans SC"; src: url("/engine/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Long Cang"; src: url("/engine/fonts/LongCang-Regular.ttf"); }
+@font-face { font-family: "Zhi Mang Xing"; src: url("/engine/fonts/ZhiMangXing-Regular.ttf"); }
+html, body { margin: 0; background: #000; }
+</style>
+<script type="module">
+const post = (p, body) => fetch(p, { method: 'POST', body });
+window.addEventListener('error', (e) => post('/fail', `${e.message} @${e.filename}:${e.lineno}`));
+window.addEventListener('unhandledrejection', (e) => post('/fail', String(e.reason?.stack || e.reason)));
+try {
+  const job = await (await fetch('/job.json')).json();
+  await Promise.all([900, 700, 500].map((w) => document.fonts.load(`${w} 40px "Noto Sans SC"`, '你们公司Company')));
+  const { Film } = await import(`/episodes/${job.episode}/film.js`);
+  const film = new Film(job);
+  await film.init();
+  for (let i = 0; i < job.times.length; i++) {
+    const pixels = await film.frame(job.times[i], !!job.source);
+    await post(`/frame?i=${i}`, pixels);
+  }
+  await post('/done', '');
+} catch (e) {
+  await post('/fail', String(e?.stack || e));
+}
+</script>
