@@ -5,7 +5,7 @@
 ```
 episode.json     素材路径、保留哪几段（segs）、BGM
 timeline.js      镜头和图层
-spoken.txt       校对后的字幕原文，一行一句
+spoken.txt       校对后的字幕，一行一句，`中文 | English`
 sfx.json         音效事件
 film.js          一行：export { Film } from '/engine/timeline.js'
 raw/  assets/    素材（不进仓库）
@@ -27,6 +27,8 @@ build/           工具生成的中间文件
 | `hotwords` | 听写热词 |
 | `sub_fix` | `{"字幕原文": [开始, 结束]}`：重说时听写对到了错误那一遍，手动指定 |
 | `sub_trim` | `{"字幕原文": "保留的字"}`：一句被剪点切掉一半时只显示保留的部分 |
+| `sub_trim_en` | 同上，用于英文 |
+| `bilingual` | 默认显示双语字幕；写 `false` 只显示中文 |
 | `bgm` | `{file, bpm, beats_per_bar, intro_end, outro_start, level_lufs}`；`file` 相对 episode 目录或绝对路径；循环接口落在小节线上 |
 
 ## shots（铺满全屏，按时间先后）
@@ -40,7 +42,7 @@ build/           工具生成的中间文件
 
 ## layers（在 `at: [开始, 结束]` 期间显示）
 
-通用字段：`at`、`fadeIn`、`fadeOut`；手写类还有 `draw`（开始画的时间）和 `dur`（画多久）。
+通用字段：`at`、`fadeIn`、`fadeOut`；文字类图层（`bigType` `pill` `chip` `title`）都可以加 `en` 写英文；手写类还有 `draw`（开始画的时间）和 `dur`（画多久）。
 在 `talk` 镜头里，手写类和大字默认画在**人身后**，加 `front: true` 可以放到人前面。
 
 | type | 主要字段 | 用途 |

@@ -335,13 +335,23 @@ export function drawLineWorld(x, st) {
 
 // ---------- composite pieces ----------
 
-export function drawSubtitle(s, target, str, a = 1) {
+export function drawSubtitle(s, target, str, a = 1, en = '') {
   if (!str || a <= 0) return;
   const tx = textTex(str, { size: 50, weight: 700, color: '#ffffff', spacing: 1, pad: 6 });
   const sc = Math.min(1, 960 / tx.w);
-  const back = pillTex(' ', { size: 10, h: Math.round(tx.h * sc + 26), padX: Math.round(tx.w * sc / 2 + 22), bg: 'rgba(12,16,22,.58)' });
-  s.quad(target, back.tex, card(540, SUB_Y, back.w, back.h), { opacity: a });
-  s.quad(target, tx.tex, card(540, SUB_Y, tx.w * sc, tx.h * sc), { opacity: a });
+  if (!en) {
+    const back = pillTex(' ', { size: 10, h: Math.round(tx.h * sc + 26), padX: Math.round(tx.w * sc / 2 + 22), bg: 'rgba(12,16,22,.58)' });
+    s.quad(target, back.tex, card(540, SUB_Y, back.w, back.h), { opacity: a });
+    s.quad(target, tx.tex, card(540, SUB_Y, tx.w * sc, tx.h * sc), { opacity: a });
+    return;
+  }
+  // bilingual: the Chinese line keeps its place, English sits under it, smaller and slightly dimmer
+  const ex = textTex(en, { size: 34, weight: 600, color: '#dfe7f1', spacing: 0, pad: 6 }), es = Math.min(1, 960 / ex.w);
+  const w = Math.max(tx.w * sc, ex.w * es), h = tx.h * sc + ex.h * es + 18, cy = SUB_Y + (ex.h * es + 4) / 2;
+  const back = pillTex(' ', { size: 10, h: Math.round(h + 18), padX: Math.round(w / 2 + 24), bg: 'rgba(12,16,22,.6)' });
+  s.quad(target, back.tex, card(540, cy, back.w, back.h), { opacity: a });
+  s.quad(target, tx.tex, card(540, cy - h / 2 + tx.h * sc / 2 + 4, tx.w * sc, tx.h * sc), { opacity: a });
+  s.quad(target, ex.tex, card(540, cy + h / 2 - ex.h * es / 2 - 4, ex.w * es, ex.h * es), { opacity: a * .95 });
 }
 
 // Square picture-in-picture of the speaker: blue frame, pane tab, name, live level bars.

@@ -120,9 +120,14 @@ export class Film {
         let x = 540 - tx.reduce((w, q) => w + q.w, 0) / 2;
         for (const q of tx) { s.quad(T, q.tex, card(540 + (x + q.w / 2 - 540) * l.scale, y, q.w, q.h, { scale: l.scale }), { opacity: op }); x += q.w; }
       });
-    } else if (L.type === 'pill') this.pillAt(T, L.text, L.x ?? 540, L.y, t, L.pop ?? L.at[0], { blue: L.blue, size: L.size, a, rz: L.rz });
-    else if (L.type === 'chip') { const c = chipTex(L.text); s.quad(T, c.tex, card((L.x ?? 50) + c.w / 2, L.y ?? 150, c.w, c.h), { opacity: a }); }
-    else if (L.type === 'title') { this.text(T, L.text, 540, L.y ?? 210, { size: L.size || 54, weight: 900, opacity: a }); if (L.sub) this.text(T, L.sub, 540, (L.y ?? 210) + 66, { size: 28, weight: 500, color: '#8fa2b8', opacity: a }); }
+      if (L.en) {
+        const n = (L.lines || []).length, last = L.lines[n - 1], size = last.size || L.size || 210, y = last.y ?? (L.y ?? 470) + (n - 1) * size * 1.15;
+        const l = landing(t, L.at[0] + n * .22, .38, 1.1);
+        if (l.u > 0) this.text(T, L.en, 540, y + size * .62, { size: Math.round(size * .26), weight: 800, color: L.enColor || '#5b6675', spacing: 2, opacity: l.op * a });
+      }
+    } else if (L.type === 'pill') { this.pillAt(T, L.text, L.x ?? 540, L.y, t, L.pop ?? L.at[0], { blue: L.blue, size: L.size, a, rz: L.rz }); if (L.en) this.text(T, L.en, L.x ?? 540, L.y + (L.size || 40) * 1.55, { size: Math.round((L.size || 40) * .62), weight: 700, color: L.enColor || (this.shotAt(t).kind === 'dark' ? '#9fb3c8' : '#3a4552'), opacity: a * smooth(t, (L.pop ?? L.at[0]) + .2, (L.pop ?? L.at[0]) + .5) }); }
+    else if (L.type === 'chip') { const c = chipTex(L.en ? `${L.text}  ${L.en}` : L.text); s.quad(T, c.tex, card((L.x ?? 50) + c.w / 2, L.y ?? 150, c.w, c.h), { opacity: a }); }
+    else if (L.type === 'title') { this.text(T, L.text, 540, L.y ?? 210, { size: L.size || 54, weight: 900, opacity: a }); const sub = [L.en, L.sub].filter(Boolean).join(' · '); if (sub) this.text(T, sub, 540, (L.y ?? 210) + 66, { size: 28, weight: 500, color: '#8fa2b8', opacity: a }); }
     else if (L.type === 'lines') this.lines(T, L, t, a);
     else if (L.type === 'screen') {   // a recording as the main picture, lifted with glow and shadow
       const r = this.rec[L.rec]; await r.load(this.recFrame(L.rec, L, t));
@@ -239,7 +244,7 @@ export class Film {
     }
     this.mCopy.uniforms.src.value = T.texture; s.pass(this.mCopy, this.post);
     const line = this.subs.find((l) => ft >= l.s && ft < l.e);
-    if (line && !(S.kind === 'end' && S.noSubs)) drawSubtitle(s, this.post, line.text, smooth(ft, line.s, line.s + .06) * (1 - smooth(ft, line.e - .05, line.e)));
+    if (line && !(S.kind === 'end' && S.noSubs)) drawSubtitle(s, this.post, line.text, smooth(ft, line.s, line.s + .06) * (1 - smooth(ft, line.e - .05, line.e)), this.ep.bilingual === false ? '' : line.en || '');
     this.mFinal.uniforms.frameNo.value = Math.round(ft * 30); s.pass(this.mFinal, null);
     return s.readPixels();
   }

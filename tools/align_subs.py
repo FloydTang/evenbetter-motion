@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Give each spoken line its time from the ASR tokens. The text is the corrected text, the timing comes from ASR.
-Usage: align_subs.py spoken.txt tokens.json out.json"""
+Usage: align_subs.py spoken.txt tokens.json out.json\nspoken.txt: one subtitle per line, optionally "中文 | English"."""
 import difflib, json, re, sys
 from pathlib import Path
 
-lines = [l.strip() for l in Path(sys.argv[1]).read_text().splitlines() if l.strip()]
+raw = [l.strip() for l in Path(sys.argv[1]).read_text().splitlines() if l.strip()]
+# A line may carry its English after " | ": 中文字幕 | English subtitle
+lines = [l.split(" | ", 1)[0].strip() for l in raw]
+en = [l.split(" | ", 1)[1].strip() if " | " in l else "" for l in raw]
 tokens = json.loads(Path(sys.argv[2]).read_text())
 tok_re = re.compile(r"[A-Za-z0-9']+|[一-鿿]")
 a_tok = [t["t"].lower() for t in tokens]
@@ -27,13 +30,13 @@ out, weak = [], []
 for i, l in enumerate(lines):
     if i not in first:
         weak.append(l)
-        out.append({"s": None, "e": None, "text": l})
+        out.append({"s": None, "e": None, "text": l, **({"en": en[i]} if en[i] else {})})
         continue
     n = sum(1 for o in owner if o == i)
     hit = sum(1 for bi, o in enumerate(owner) if o == i and bi in b2a)
     if hit / n < .6:
         weak.append(f"{l} ({hit}/{n})")
-    out.append({"s": tokens[first[i]]["s"], "e": tokens[last[i]]["e"], "text": l})
+    out.append({"s": tokens[first[i]]["s"], "e": tokens[last[i]]["e"], "text": l, **({"en": en[i]} if en[i] else {})})
 # A line stays up until the next one starts, unless there is a real pause.
 for i, o in enumerate(out):
     if o["s"] is None:

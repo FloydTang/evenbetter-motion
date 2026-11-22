@@ -19,7 +19,8 @@ description: 半斤九两动效系统：把一条竖屏口播（白墙真人 + �
 5. **必须有 BGM**，压在人声下面，人说话时自动再压低。
 6. **音效只给看得见的动作**，低频重击全片最多 2 次。
 7. **每个特效都要讲清一件具体的事**，不做纯装饰。大转场（蓝窗）每条最多 1–2 次。
-8. **隐私**：真名、余额、密钥、对话框、客户名一律打码或裁掉；录屏里看不清是否敏感的，先问。
+8. **文案中英双语。** 内容同时发国内和海外：字幕一律中文在上、英文在下；大字、标签、段落角标、标题都配英文（`en` 字段）；另外导出中文、英文、双语三份 SRT。英文要自然地道，意译不直译，按海外观众能懂的方式说。
+9. **隐私**：真名、余额、密钥、对话框、客户名一律打码或裁掉；录屏里看不清是否敏感的，先问。
 
 ## 流程
 
@@ -30,7 +31,8 @@ description: 半斤九两动效系统：把一条竖屏口播（白墙真人 + �
 1. 新建    cp -r episodes/_template episodes/<日期-名字>；素材放 raw/；改 episode.json 的 source / recording
 2. 听写    ffmpeg -i raw/talk.mp4 -ac 1 -ar 16000 build/a16k.wav
            python tools/asr_chunks.py build/a16k.wav build/tokens.json "热词 热词"
-3. 校字    写 spoken.txt：一行一句字幕，按录音逐字（只改错字，不改说法）
+3. 校字    写 spoken.txt：一行一句字幕，按录音逐字（只改错字，不改说法），
+           每行后面接 ` | ` 和英文：`过去八十四天 | Over the past 84 days`
            python tools/align_subs.py spoken.txt build/tokens.json build/subs_src.json
 4. 剪辑表  在 episode.json 写 segs（保留的源时间段）。剪点落在词与词之间（看 tokens 的 s/e），
            删口误、重说、长停顿；目标 2 分半。先把剪辑表给用户确认。
@@ -43,12 +45,14 @@ description: 半斤九两动效系统：把一条竖屏口播（白墙真人 + �
            拼成一张总览图自己先看：字有没有压脸、录屏有没有露隐私、手写字有没有被画中画挡住
 9. 声音    写 sfx.json（源时间），python tools/make_audio.py episodes/<ep>
 10. 成片   bash tools/render_film.sh <ep> 0 <成片秒数> episodes/<ep>/out/film.mp4 8
+           python tools/make_srt.py episodes/<ep>      # 中文 / 英文 / 双语三份 SRT
 11. 检查   1 秒一格的总览图 + 响度（目标约 -16 LUFS，峰值 ≤ -1.5 dB）+ 隐私逐屏复查，再交付
 ```
 
 ## 交付时要告诉用户的
 
 - 成片时长、删了哪些段落（原片时间 + 原因）
+- 英文字幕里意译较多、需要本人确认的句子
 - 哪些数字、说法没核实（听不清的数字、录屏里没有的数据）
 - 隐私怎么处理的
 - 文件在哪

@@ -9,10 +9,10 @@ export default {
   ],
   layers: [
     // hook: big word behind the person, a handwritten reaction
-    { type: 'bigType', at: [5.9, 8.3], y: 470, lines: [[['Codex', 'ink']]], size: 230 },
+    { type: 'bigType', at: [5.9, 8.3], y: 470, lines: [[['Codex', 'ink']]], size: 230, en: 'ONE TOOL, FIVE JOBS' },
     { type: 'hand', at: [7.4, 8.3], text: '真香！', x: 830, y: 250, size: 150, rot: .12, font: 'brush', color: 'red', draw: 7.5 },
     // a problem: section chip + crossed-out list
-    { type: 'chip', at: [9, 14], text: '① 注册难' },
+    { type: 'chip', at: [9, 14], text: '① 注册难', en: 'Sign-up' },
     { type: 'hand', at: [9, 14], text: '网络环境有要求', x: 120, y: 270, size: 72, align: 'left', draw: 9.2 },
     { type: 'strike', at: [9, 14], x0: 110, x1: 600, y: 270, draw: 12 },
     // principle: sources -> gateway -> partners, each gets a key
@@ -26,6 +26,6 @@ export default {
     // steps lit one by one on real text
     { type: 'term', at: [30, 40], title: '代码块', intro: '总共就干了四件事',
       lines: ['第一行', '   ↑', '第二行'], steps: [{ at: 31, hi: [2], name: '第一步' }, { at: 34, hi: [0], name: '第二步' }] },
-    { type: 'pill', at: [30, 40], text: '加助教伙伴', y: 260, blue: true, size: 56 },
+    { type: 'pill', at: [30, 40], text: '加助教伙伴', en: 'Talk to our assistant', y: 260, blue: true, size: 56 },
   ],
 };
