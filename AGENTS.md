@@ -1,5 +1,7 @@
 # 给编程助手（Codex 等）的说明
 
+如果仓库里有 `INTERNAL.md`，说明这是内部版，先读它。
+
 这个仓库是一套剪口播视频的工作方法和代码，不是普通的模板库。
 
 1. 先读 `SKILL.md`（成片标准和流程），再读 `docs/style-guide.md` 和 `docs/timeline.md`。
