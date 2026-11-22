@@ -105,7 +105,7 @@ const server = http.createServer((req, res) => {
   });
 });
 
-const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'house-motion-'));
+const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'evenbetter-motion-'));
 server.listen(0, '127.0.0.1', () => {
   const { port } = server.address();
   chrome = spawn(CHROME, ['--headless=new', ...ANGLE, '--enable-gpu', '--ignore-gpu-blocklist', '--no-first-run',

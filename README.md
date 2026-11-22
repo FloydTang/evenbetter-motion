@@ -1,4 +1,4 @@
-# 半斤九两动效系统
+# EvenBetter Motion · 半斤九两动效系统
 
 把一条竖屏口播剪成 2–3 分钟、带代码动效的知识分享短视频。画面全部由代码按时间算出来：真人口播在白墙前，讲到原理和数据时进入深色代码世界，真实录屏放进圆角小窗当证据，人留在圆角画中画里继续讲。
 
@@ -21,8 +21,8 @@
 需要：Node 18+、Google Chrome、ffmpeg、Python 3.10+（`numpy scipy`，听写还要 `funasr`）。
 
 ```bash
-git clone https://github.com/FloydTang/bjjl-house-motion-skill.git
-cd bjjl-house-motion-skill
+git clone https://github.com/FloydTang/evenbetter-motion.git
+cd evenbetter-motion
 npm ci
 cp -r episodes/_template episodes/20261201-我的第一条
 # 把口播视频放到 episodes/20261201-我的第一条/raw/talk.mp4，录屏放 raw/screen.mov
@@ -40,7 +40,7 @@ node tools/render.mjs <episode> --stills 1.0,5.0 --still-dir /tmp/stills
 
 | 工具 | 怎么用 |
 |---|---|
-| Claude Code | 把仓库放到 `~/.claude/skills/bjjl-house-motion/`，或者在项目里直接打开，它会读 `SKILL.md` |
+| Claude Code | 把仓库放到 `~/.claude/skills/evenbetter-motion/`，或者在项目里直接打开，它会读 `SKILL.md` |
 | Codex | 在仓库目录里打开，它会读 `AGENTS.md` |
 | 其他助手 | 让它先读 `SKILL.md`、`docs/style-guide.md`、`docs/timeline.md` |
 
@@ -58,6 +58,10 @@ audio/                CC0 音效和混音脚本
 episodes/_template/   新片子的模板
 examples/             第一条试点片的完整代码（只有代码，没有素材）
 ```
+
+## 名字
+
+EvenBetter 来自半斤九两 logo 下的英文 “EVEN BETTER”。
 
 ## 许可
 

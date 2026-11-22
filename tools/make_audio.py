@@ -28,7 +28,7 @@ mixf = "[0:a]asplit[v][key];[1:a]volume=-5dB[f];"
 bgm = ep.cfg.get("bgm")
 if bgm:
     # Intro once, then the body repeated on whole bars, ending on the track's own outro. Crossfades sit on bar lines.
-    f = str(Path(bgm["file"]).expanduser()); bar = 60 / bgm.get("bpm", 110) * bgm.get("beats_per_bar", 4)
+    bp = Path(bgm["file"]).expanduser(); f = str(bp if bp.is_absolute() else ep.dir / bp); bar = 60 / bgm.get("bpm", 110) * bgm.get("beats_per_bar", 4)
     i0, o0 = bgm.get("intro_end", 0), bgm.get("outro_start")
     total = float(subprocess.run([FP, "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f], capture_output=True, text=True).stdout)
     o0 = o0 if o0 is not None else total

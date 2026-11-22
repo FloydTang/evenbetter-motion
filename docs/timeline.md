@@ -27,7 +27,7 @@ build/           工具生成的中间文件
 | `hotwords` | 听写热词 |
 | `sub_fix` | `{"字幕原文": [开始, 结束]}`：重说时听写对到了错误那一遍，手动指定 |
 | `sub_trim` | `{"字幕原文": "保留的字"}`：一句被剪点切掉一半时只显示保留的部分 |
-| `bgm` | `{file, bpm, beats_per_bar, intro_end, outro_start, level_lufs}`；循环接口落在小节线上 |
+| `bgm` | `{file, bpm, beats_per_bar, intro_end, outro_start, level_lufs}`；`file` 相对 episode 目录或绝对路径；循环接口落在小节线上 |
 
 ## shots（铺满全屏，按时间先后）
 
